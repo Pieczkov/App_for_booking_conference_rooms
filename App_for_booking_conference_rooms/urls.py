@@ -17,9 +17,12 @@ from django.contrib import admin
 from django.urls import path
 
 from booking_app import views
+from booking_app.views import AddConferenceRoomView, ConferenceRoomListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
     path('home', views.home),
+    path('add_conference_room/', AddConferenceRoomView.as_view()),
+    path('conference_room_list/', ConferenceRoomListView.as_view()),
 ]
