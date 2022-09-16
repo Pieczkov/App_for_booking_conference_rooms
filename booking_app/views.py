@@ -61,4 +61,4 @@ class ConferenceRoomDeleteView(View):
     def get(self, request, room_id):
         room_to_delete= ConferenceRoom.objects.get(id = room_id)
         room_to_delete.delete()
-        return redirect("conference_room_list.http")
+        return redirect("/conference_room_list/")
