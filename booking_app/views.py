@@ -39,7 +39,7 @@ class AddConferenceRoomView(View):
         ConferenceRoom(room_name=name, room_capacity=capacity, projector=projector).save()
         return render(request, "add_conference_room.html",
                       {'message': f"Added a conference room {name} with capacity {capacity}"})
-        #return redirect("conference_room_list.html")
+        #return redirect("conference_room_list")
 
 
 """A class that takes all the objects from the ConferenceRoom model 
@@ -59,6 +59,37 @@ class ConferenceRoomListView(View):
 class ConferenceRoomDeleteView(View):
 
     def get(self, request, room_id):
-        room_to_delete= ConferenceRoom.objects.get(id = room_id)
+        room_to_delete = ConferenceRoom.objects.get(id=room_id)
         room_to_delete.delete()
+        return redirect("/conference_room_list/")
+
+
+"""Class enabling modification of conference rooms"""
+
+
+class ConferenceRoomModificationView(View):
+
+    def get(self, request, room_id):
+        room_to_change = ConferenceRoom.objects.get(id=room_id)
+        return render(request, "modify_conference_room.html", {"room": room_to_change})
+
+    def post(self, request, room_id):
+        name = request.POST.get("room_name")
+        capacity = request.POST.get("room_capacity")
+        capacity = int(capacity) if capacity else 0
+        projector = request.POST.get("projector")
+        if projector == "on":
+            projector = True
+        else:
+            projector = False
+        if name == "":
+            return render(request, "add_conference_room.html", context={"error": "The name of the conference room is "
+                                                                                 "essential"})
+        if capacity < 0:
+            return render(request, "add_conference_room.html", context={"error": "Capacity must be above zero"})
+        if ConferenceRoom.objects.filter(room_name=name):
+            return render(request, "add_conference_room.html", context={"error": "The name of the room is already taken"})
+        ConferenceRoom(id=room_id, room_name=name, room_capacity=capacity, projector=projector).save()
+        # return render(request, "add_conference_room.html",
+        #               {'message': f"Added a conference room {name} with capacity {capacity}"})
         return redirect("/conference_room_list/")

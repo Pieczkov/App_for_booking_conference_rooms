@@ -14,14 +14,18 @@
 
 <form method="post">
     {% csrf_token %}
-    <p><input type="text" name="room_name" placeholder="add a room "></p>
-    <p><input type="number" name="room_capacity" placeholder="give the room_capacity"></p>
+    <p><label>
+        <input type="text" name="room_name" placeholder="change a room name" value={{ room.room_name }}>
+    </label></p>
+    <p><label>
+        <input type="number" name="room_capacity" placeholder="change the room_capacity" value={{ room.room_capacity }}>
+    </label></p>
         <div>
-      <input type="checkbox" name="projector" >
+      <input type="checkbox" id="projector" >
       <label for="projector">projector</label>
     </div>
-    <p><input type="submit" ></p>
+    <p><input type="submit"></p>
 </form>
-{{ error }} {{ message }}
+{{ error }}
 </body>
 </html>
