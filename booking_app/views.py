@@ -24,11 +24,7 @@ class AddConferenceRoomView(View):
         name = request.POST.get("room_name")
         capacity = request.POST.get("room_capacity")
         capacity = int(capacity) if capacity else 0
-        projector = request.POST.get("projector")
-        if projector == "on":
-            projector = True
-        else:
-            projector = False
+        projector = request.POST.get("projector") == "on"
         if name == "":
             return render(request, "add_conference_room.html", context={"error": "The name of the conference room is "
                                                                                  "essential"})
@@ -37,9 +33,9 @@ class AddConferenceRoomView(View):
         if ConferenceRoom.objects.filter(room_name=name):
             return render(request, "add_conference_room.html", context={"error": "The name of the room is already taken"})
         ConferenceRoom(room_name=name, room_capacity=capacity, projector=projector).save()
-        return render(request, "add_conference_room.html",
-                      {'message': f"Added a conference room {name} with capacity {capacity}"})
-        #return redirect("conference_room_list")
+        #return render(request, "conference_room_list.html")
+                      # {'message': f"Added a conference room {name} with capacity {capacity}"})
+        return redirect("/conference_room_list/")
 
 
 """A class that takes all the objects from the ConferenceRoom model 
@@ -77,18 +73,14 @@ class ConferenceRoomModificationView(View):
         name = request.POST.get("room_name")
         capacity = request.POST.get("room_capacity")
         capacity = int(capacity) if capacity else 0
-        projector = request.POST.get("projector")
-        if projector == "on":
-            projector = True
-        else:
-            projector = False
+        projector = request.POST.get("projector") == "on"  #zamiast ifuw dodac == "on" bo chceck box zwraca nona gdy sie nie nic nie zaznaczy
         if name == "":
-            return render(request, "add_conference_room.html", context={"error": "The name of the conference room is "
+            return render(request, "conference_room_list.html", context={"error": "The name of the conference room is "
                                                                                  "essential"})
         if capacity < 0:
-            return render(request, "add_conference_room.html", context={"error": "Capacity must be above zero"})
-        if ConferenceRoom.objects.filter(room_name=name):
-            return render(request, "add_conference_room.html", context={"error": "The name of the room is already taken"})
+            return render(request, "conference_room_list.html", context={"error": "Capacity must be above zero"})
+        if ConferenceRoom.objects.filter(room_name=name):   #tego ni potrzeba chyba potem to przemysle
+            return render(request, "conference_room_list.html", context={"error": "The name of the room is already taken"})
         ConferenceRoom(id=room_id, room_name=name, room_capacity=capacity, projector=projector).save()
         # return render(request, "add_conference_room.html",
         #               {'message': f"Added a conference room {name} with capacity {capacity}"})
