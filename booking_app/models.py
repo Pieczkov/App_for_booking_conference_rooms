@@ -14,7 +14,7 @@ class ConferenceRoom(models.Model):
 
 
 class RoomReservation(models.Model):
-    date = models.DateField(auto_now=True)
+    date = models.DateField(auto_now=False)
     comment = models.TextField(null="no comment added")
     room_id = models.ForeignKey(ConferenceRoom, on_delete=models.CASCADE)
 

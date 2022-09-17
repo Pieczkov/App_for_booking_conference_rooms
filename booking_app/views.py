@@ -1,8 +1,8 @@
+from datetime import date, datetime
 
 from django.shortcuts import render, redirect
 from django.views import View
-from booking_app.models import ConferenceRoom
-
+from booking_app.models import ConferenceRoom, RoomReservation
 
 """Function that redirects to the home page"""
 
@@ -84,4 +84,22 @@ class ConferenceRoomModificationView(View):
         ConferenceRoom(id=room_id, room_name=name, room_capacity=capacity, projector=projector).save()
         # return render(request, "add_conference_room.html",
         #               {'message': f"Added a conference room {name} with capacity {capacity}"})
+        return redirect("/conference_room_list/")
+
+
+class ConferenceRoomReservationView(View):
+
+    def get(self, request, room_id):
+        return render(request, 'conference_room_reservation.html')
+
+    def post(self, request, room_id):
+        reservation_date = request.POST.get("date")
+        comment = request.POST.get("comment")
+        if date.fromisoformat(reservation_date) < date.today():
+            return render(request, "conference_room_reservation.html",
+                          {"message": "the date is in the past"})
+        if RoomReservation.objects.filter(date=reservation_date):
+            return render(request, "conference_room_reservation.html",
+                          {"message": "the room is already reserved on the selected date"})
+        RoomReservation(date=reservation_date, comment=comment, room_id_id=room_id).save()
         return redirect("/conference_room_list/")

@@ -18,7 +18,7 @@ from django.urls import path
 
 from booking_app import views
 from booking_app.views import AddConferenceRoomView, ConferenceRoomListView, ConferenceRoomDeleteView, \
-    ConferenceRoomModificationView
+    ConferenceRoomModificationView, ConferenceRoomReservationView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +28,5 @@ urlpatterns = [
     path('conference_room_list/', ConferenceRoomListView.as_view()),
     path('conference_room_list/delete/<int:room_id>/', ConferenceRoomDeleteView.as_view()),
     path('conference_room_list/modify/<int:room_id>/', ConferenceRoomModificationView.as_view()),
+    path('conference_room_list/reserve/<int:room_id>/', ConferenceRoomReservationView.as_view()),
 ]
