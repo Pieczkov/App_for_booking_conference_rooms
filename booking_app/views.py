@@ -80,20 +80,31 @@ class ConferenceRoomModificationView(View):
 
 
 class ConferenceRoomReservationView(View):
+    """Conference room booking class"""
 
     def get(self, request, room_id):
         return render(request, 'conference_room_reservation.html')
 
     def post(self, request, room_id):
-        reservation_date = request.POST.get("date")
+        reservation_date = request.POST.get("reservation_date")
         comment = request.POST.get("comment")
+        if reservation_date == "":
+            return render(request, "conference_room_reservation.html", {"message": "Please chose reservation date"})
         if date.fromisoformat(reservation_date) < date.today():
             return render(request, "conference_room_reservation.html",
                           {"message": "the date is in the past"})
-        if RoomReservation.objects.filter(date=reservation_date):
+        if RoomReservation.objects.filter(room_id=room_id, reservation_date=reservation_date):
             return render(request, "conference_room_reservation.html",
                           {"message": "the room is already reserved on the selected date"})
-        RoomReservation(date=reservation_date, comment=comment, room_id_id=room_id).save()
+        RoomReservation(reservation_date=reservation_date, comment=comment, room_id_id=room_id).save()
         return redirect("/conference_room_list/")
 
-# class ConferenceRoomInfoView(View):
+class ConferenceRoomInfoView(View):
+    """A class that serves any information about a single conference room"""
+
+    def get(self, request, room_id):
+        room = ConferenceRoom.objects.get(id=room_id)
+        reservation = RoomReservation.objects.filter(room_id_id=room_id)
+
+        return render(request, "conference_room_info.html", context={"room": room,
+                                                                     "comments": reservation})

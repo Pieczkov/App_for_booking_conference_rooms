@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    {% include 'style.html' %}
+</head>
+<body>
+{% include 'navbar.html' %}
+
+<table style="border-color: black">
+    <thead>
+        <tr>
+            <th>Conference room {{ room.room_name }}</th>
+        </tr>
+    </thead>
+        <td>Room capacity = {{ room.room_capacity }}</td>
+        {% if room.projector == 1 %}
+        <td>In this conference room projector is available</td>
+        {% else %}
+        <td>In this conference room projector is not available</td>
+        {% endif %}
+</table>
+
+<table style="border-color: black", border=1>
+
+        <tr>
+            <th>There are all comments about {{ room.room_name }}</th>
+        </tr>
+        <tr>
+            {% for xxx in comments %}
+            <td>{{ xxx.comment }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>The date when conference room {{ room.room_name }} is reserved:</th>
+        </tr>
+        <tr>
+            {% for xxx in comments %}
+            <td>{{ xxx.date }}</td>
+            {% endfor %}
+        </tr>
+
+
+</table>
+
+
+<td><a href="/conference_room_list/modify/{{ room.id }}">Modify</a></td>
+<td><a href="/conference_room_list/delete/{{ room.id }}">Delete</a></td>
+<td><a href="/conference_room_list/reserve/{{ room.id }}">Reserve</a></td>
+
+
+
+
+
