@@ -21,26 +21,28 @@
         </tr>
     </thead>
     <tbody>
+
     {% for room in conference_rooms %}
         <tr>
             <td><a href="/conference_room_list/{{ room.id }}">{{ room.room_name }}</a> </td>
             <td>{{ room.room_capacity }}</td>
             {% if room.projector is True %}
-            <td>+</td>
+            <td>Projector IS available</td>
             {% else %}
-            <td>-</td>
+            <td>Projector IS NOT available</td>
             {% endif %}
-{#            availability#}
-            {% if avalibility is True %}
-            <td>Conference room is available</td>
-            {% else %}
+
+            {% if room.reserved %}
             <td>Conference room is not available</td>
+            {% else %}
+            <td>Conference room is available</td>
             {% endif %}
             <td><a href="/conference_room_list/modify/{{ room.id }}">Modify</a></td>
             <td><a href="/conference_room_list/delete/{{ room.id }}">Delete</a></td>
             <td><a href="/conference_room_list/reserve/{{ room.id }}">Reserve</a></td>
         </tr>
     {% endfor %}
+
     </tbody>
 </table>
 

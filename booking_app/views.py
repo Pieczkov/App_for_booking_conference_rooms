@@ -1,5 +1,6 @@
 from datetime import date, datetime
 
+from django.db.models import QuerySet
 from django.shortcuts import render, redirect
 from django.views import View
 from booking_app.models import ConferenceRoom, RoomReservation
@@ -42,7 +43,10 @@ class ConferenceRoomListView(View):
 
     def get(self, request):
         conference_rooms = ConferenceRoom.objects.all()
+        for room in conference_rooms:
+            room.reserved = RoomReservation.objects.filter(room_id_id=room, reservation_date=date.today())
         return render(request, "conference_room_list.html", context={"conference_rooms": conference_rooms})
+
 
 
 class ConferenceRoomDeleteView(View):
@@ -105,6 +109,5 @@ class ConferenceRoomInfoView(View):
     def get(self, request, room_id):
         room = ConferenceRoom.objects.get(id=room_id)
         reservation = RoomReservation.objects.filter(room_id_id=room_id)
-
         return render(request, "conference_room_info.html", context={"room": room,
                                                                      "comments": reservation})
