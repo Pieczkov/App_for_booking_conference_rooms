@@ -87,7 +87,9 @@ class ConferenceRoomReservationView(View):
     """Conference room booking class"""
 
     def get(self, request, room_id):
-        return render(request, 'conference_room_reservation.html')
+        room = ConferenceRoom.objects.get(pk=room_id)
+        reservations = RoomReservation.objects.filter(room_id_id=room_id)
+        return render(request, 'conference_room_reservation.html', context={"room": room, "reservations": reservations})
 
     def post(self, request, room_id):
         reservation_date = request.POST.get("reservation_date")
@@ -110,4 +112,4 @@ class ConferenceRoomInfoView(View):
         room = ConferenceRoom.objects.get(id=room_id)
         reservation = RoomReservation.objects.filter(room_id_id=room_id)
         return render(request, "conference_room_info.html", context={"room": room,
-                                                                     "comments": reservation})
+                                                                     "reservations": reservation})

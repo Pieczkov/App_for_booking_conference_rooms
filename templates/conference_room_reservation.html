@@ -9,7 +9,7 @@
     {% include 'style.html' %}
 </head>
 <body>
-
+{% include 'navbar.html' %}
 <form method="post">
 {% csrf_token %}
 <table>
@@ -26,6 +26,35 @@
     </tbody>
 </table>
 {{ message }}
+<table style="border-color: black">
+    <thead>
+        <tr>
+            <th>Conference room {{ room.room_name }}</th>
+        </tr>
+    </thead>
+        <td>Room capacity = {{ room.room_capacity }}</td>
+        {% if room.projector == 1 %}
+        <td>In this conference room projector is available</td>
+        {% else %}
+        <td>In this conference room projector is not available</td>
+        {% endif %}
+</table>
+
+<table>
+{#    <tr>#}
+{#            {% for xxx in comments %}#}
+{#            <td>{{ xxx.comment }}</td>#}
+{#            {% endfor %}#}
+{#        </tr>#}
+        <tr>
+            <th>The date when conference room {{ room.room_name }} is reserved:</th>
+        </tr>
+        <tr>
+            {% for reservation in reservations  %}
+            <td>{{ reservation.reservation_date }}</td>
+            {% endfor %}
+        </tr>
+</table>
 </form>
 
 

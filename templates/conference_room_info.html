@@ -31,16 +31,16 @@
             <th>There are all comments about {{ room.room_name }}</th>
         </tr>
         <tr>
-            {% for xxx in comments %}
-            <td>{{ xxx.comment }}</td>
+            {% for comment in reservations %}
+            <td>{{ comment.comment }}</td>
             {% endfor %}
         </tr>
         <tr>
             <th>The date when conference room {{ room.room_name }} is reserved:</th>
         </tr>
         <tr>
-            {% for xxx in comments %}
-            <td>{{ xxx.date }}</td>
+            {% for dates in reservations %}
+            <td>{{ dates.reservation_date }}</td>
             {% endfor %}
         </tr>
 
